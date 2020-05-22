@@ -30,17 +30,18 @@ public class ShoppingOrder implements Serializable {
 	
 	private String orderNumber;
 	private String merchant;
+	private String status;
 	private Date date;
 	private double totalPrice;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Item> items;
 
-	public int getId() {
+	public int getOrderId() {
 		return orderId;
 	}
 
-	public void setId(int orderId) {
+	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 
@@ -68,6 +69,14 @@ public class ShoppingOrder implements Serializable {
 		this.merchant = merchant;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -91,4 +100,6 @@ public class ShoppingOrder implements Serializable {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
+
+	
 }
