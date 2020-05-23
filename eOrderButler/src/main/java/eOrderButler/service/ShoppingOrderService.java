@@ -30,7 +30,7 @@ public class ShoppingOrderService {
 		return shoppingOrderDao.getShoppingOrderById(orderId);
 	}
 	
-	public List<ShoppingOrder> getAllShoppingOrders() {
-		return shoppingOrderDao.getAllShoppingOrders();
+	public List<ShoppingOrder> getAllShoppingOrders(int userId) {
+		return shoppingOrderDao.getAllShoppingOrders(userId);
 	}
 }
