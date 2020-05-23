@@ -15,11 +15,9 @@ public class UserService {
     public void addUser(User user) {   	 
    	 userDao.addUser(user);
     }
-//    ???? return type is String
+    //???? return type is String
     public String getUserByUserName(String userName) {
    	 return userDao.getUserByUserName(userName);
     }
-    
-    
 }
 
