@@ -93,7 +93,7 @@ public class ItemDao {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<Item> criteriaQuery = criteriaBuilder.createQuery(Item.class);
 			Root<Item> root = criteriaQuery.from(Item.class);
-			criteriaQuery.select(root);
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("orderId"), orderId));
 			items = session.createQuery(criteriaQuery).getResultList();
 			
 			session.getTransaction().commit();
