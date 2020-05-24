@@ -1,5 +1,12 @@
 package eOrderButler.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +72,7 @@ public class ItemDao {
 		}
 	}
 	
+	
 	public Item getItemById(int itemId) {
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
@@ -76,4 +84,23 @@ public class ItemDao {
 		}
 		return null;
 	}
+	
+	public List<Item> getItemListByShoppingOrderId(int orderId) {
+		List<Item> items = new ArrayList<>();
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+			
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Item> criteriaQuery = criteriaBuilder.createQuery(Item.class);
+			Root<Item> root = criteriaQuery.from(Item.class);
+			criteriaQuery.select(root);
+			items = session.createQuery(criteriaQuery).getResultList();
+			
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return items;
+	}
+	
 }
