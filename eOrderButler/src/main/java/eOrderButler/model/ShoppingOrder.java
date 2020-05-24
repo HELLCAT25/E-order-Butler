@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "ShoppingOrder")
 public class ShoppingOrder implements Serializable {
@@ -25,7 +24,6 @@ public class ShoppingOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int orderId;
 	
-	@ManyToOne
 	private User user;
 	
 	private String orderNumber;
@@ -100,6 +98,4 @@ public class ShoppingOrder implements Serializable {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-
-	
 }
