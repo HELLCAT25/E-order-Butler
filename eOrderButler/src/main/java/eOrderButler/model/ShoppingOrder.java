@@ -24,8 +24,7 @@ public class ShoppingOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int orderId;
 	
-	@ManyToOne
-	private int userId;
+	private User user;
 	
 	private String orderNumber;
 	private String merchant;
@@ -44,12 +43,12 @@ public class ShoppingOrder implements Serializable {
 		this.orderId = orderId;
 	}
 
-	public int getuserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setuserId(int userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getOrderNumber() {
@@ -99,6 +98,4 @@ public class ShoppingOrder implements Serializable {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-
-	
 }
