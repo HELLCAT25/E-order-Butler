@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "ShoppingOrder")
 public class ShoppingOrder implements Serializable {
@@ -24,6 +26,8 @@ public class ShoppingOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int orderId;
 	
+	@ManyToOne
+	@JsonIgnore
 	private User user;
 	
 	private String orderNumber;
