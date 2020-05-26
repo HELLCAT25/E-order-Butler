@@ -91,7 +91,7 @@ public class ShoppingOrderDao {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
 			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userId"), userId));
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("user"), userId));
 			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
 			session.getTransaction().commit();
 		} catch (Exception e) {
