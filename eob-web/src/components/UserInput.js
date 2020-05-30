@@ -19,13 +19,20 @@ class UserInput extends React.Component {
     }
     render () {
         return (
-            <div className="add-item">
-                <input onChange= { this . handleInputChange } value= { this . state . userInput } />
-                <button onClick= { this . handleAdd } > Add </button>
+            <div className="input-group mb-3">
+                <input type="text" className="form-control" placeholder="Add Order Number"
+                       aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+                    <div className="input-group-append">
+                        <button className="btn btn-outline-secondary add-button" type="button">Button</button>
+                    </div>
             </div>
-        ) ;
+        );
     }
 }
 
+        // {/*<div className="add-item">*/}
+        // {/*    <input onChange= { this . handleInputChange } value= { this . state . userInput } />*/}
+        // {/*    <button onClick= { this . handleAdd } > Add </button>*/}
+        // {/*</div>*/}
 
 export default UserInput;

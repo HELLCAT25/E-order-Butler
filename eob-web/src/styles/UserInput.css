@@ -4,3 +4,7 @@
     display: flex;
     align-items: center;
 }
+
+.add-button{
+    background-color:  #61dafb;
+}

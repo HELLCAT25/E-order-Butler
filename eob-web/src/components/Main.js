@@ -32,9 +32,11 @@ class Main extends React.Component {
         return (
             <div className ="main" >
                 <SearchBar />
-                <div className ="player" >
+                <div className ="dateview" >
                     <Dataview todos= { this.state.todos }
                               handleDeleteTodo= { this.handleDeleteTodo } />
+                </div>
+                <div className ="add" >
                     <UserInput handleAddTodo= { this.handleAddTodo } />
                 </div>
             </div>
