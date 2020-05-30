@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7edc0b3-e370-4a45-beb3-a8a17d2d762b" name="Default Changelist" comment="" />
+    <list default="true" id="e7edc0b3-e370-4a45-beb3-a8a17d2d762b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +48,8 @@
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#23#57#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -159,12 +163,12 @@
       <option name="presentableId" value="Default" />
       <updated>1590463018446</updated>
       <workItem from="1590463019623" duration="7794000" />
-      <workItem from="1590878378133" duration="1878000" />
+      <workItem from="1590878378133" duration="2004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1878000" />
+    <option name="totallyTimeSpent" value="2004000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="409" y="23" width="1216" height="737" extended-state="0" />
@@ -235,7 +239,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#23#57#0" expanded="true" />
           </folding>
         </state>
       </provider>
