@@ -1,5 +1,6 @@
 package eOrderButler.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,9 @@ public class ShoppingOrderService {
 	
 	public List<ShoppingOrder> getAllShoppingOrders(int userId) {
 		return shoppingOrderDao.getAllShoppingOrders(userId);
+	}
+	
+	public List<ShoppingOrder> getAllShoppingOrdersByTime(Date startDate, Date endDate) {
+		return shoppingOrderDao.getAllShoppingOrdersByTime(startDate, endDate);
 	}
 }
