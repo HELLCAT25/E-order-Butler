@@ -116,4 +116,23 @@ public class ShoppingOrderDao {
 		}
 		return shoppingOrders;
 	}
+	
+	public List<ShoppingOrder> getOrdersByItemName(String itemName, int userId) {
+		List<ShoppingOrder> shoppingOrders = new ArrayList<>();
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
+			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
+			Predicate[] predicates = new Predicate[2];
+			predicates[0] = criteriaBuilder.equal(root.get("userId"), userId);
+			predicates[1] = criteriaBuilder.like(root.get("itemName"), String.format("%s%", itemName));
+			criteriaQuery.select(root).where(predicates);
+			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shoppingOrders;
+	}
 }
