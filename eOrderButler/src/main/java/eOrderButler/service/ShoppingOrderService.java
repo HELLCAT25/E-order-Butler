@@ -39,6 +39,10 @@ public class ShoppingOrderService {
 		return shoppingOrderDao.getAllShoppingOrdersByTime(startDate, endDate);
 	}
 	
+	public List<ShoppingOrder> getAllShoppingOrdersByTime(Date startDate, Date endDate, int userId) {
+		return shoppingOrderDao.getAllShoppingOrdersByTime(startDate, endDate, userId);
+	}
+	
 	public List<ShoppingOrder> getOrdersByItemName(String itemName, int userId) {
 		return shoppingOrderDao.getOrdersByItemName(itemName, userId);
 	}
