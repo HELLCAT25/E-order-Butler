@@ -23,7 +23,7 @@ public class ShoppingOrderController {
 	private ShoppingOrderService shoppingOrderService;
 	
 	@RequestMapping(value = "/getAllShoppingOrders/{userId}", method = RequestMethod.GET)
-	public @ResponseBody List<ShoppingOrder> getAllShoppingOrders(@PathVariable(value = "orderId") int userId) {
+	public @ResponseBody List<ShoppingOrder> getAllShoppingOrders(@PathVariable(value = "userId") int userId) {
 		List<ShoppingOrder> orders = shoppingOrderService.getAllShoppingOrders(userId);
 		return orders;
 	}

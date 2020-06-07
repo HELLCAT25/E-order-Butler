@@ -19,6 +19,7 @@
 	<c:if test="${pageContext.request.userPrincipal.name==null}">
 		<li><a href="<c:url value="/login" />"> Login</a></li>
 	</c:if>
+	I'm IN
 
 </body>
 </html>
