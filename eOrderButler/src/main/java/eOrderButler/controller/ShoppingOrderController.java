@@ -45,7 +45,7 @@ public class ShoppingOrderController {
 		return String.format("redirect:/getAllShoppingOrders/{%s}", userId);
 	}
 	
-	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
+	@RequestMapping(value = "/getSelectedShoppingOrders", method = RequestMethod.GET)
 	public 	@ResponseBody List<ShoppingOrder> getAllShoppingOrdersByTime(@RequestParam(value = "starting_date") @DateTimeFormat(pattern = DATE_PATTERN) Date startDate, 
 																		@RequestParam("ending_date") @DateTimeFormat(pattern = DATE_PATTERN) Date endDate) {
 		if (startDate != null && endDate != null) {
