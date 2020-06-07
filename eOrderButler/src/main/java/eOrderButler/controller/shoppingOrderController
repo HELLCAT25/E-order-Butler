@@ -21,6 +21,7 @@ public class ShoppingOrderController {
 
 	@Autowired
 	private ShoppingOrderService shoppingOrderService;
+	private UserService userService;
 	
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
 	public @ResponseBody List<ShoppingOrder> getAllShoppingOrders() {
@@ -52,7 +53,8 @@ public class ShoppingOrderController {
 	
 	private int getUserId() {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) loggedInUser.getPrincipal();
+		UserDetails userDetail = (UserDetails) loggedInUser.getPrincipal();
+		User user = userService.getUserByUserEmail(userDetail.getUsername());
 		return user.getUserId();
 	}
 	
