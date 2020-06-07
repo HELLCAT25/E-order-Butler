@@ -8,17 +8,16 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,17 +32,24 @@ import eOrderButler.service.UserService;
 @Controller
 public class ShoppingOrderController {
 
+	private static final String DATE_PATTERN = "yyyy-MM-dd";
+	
 	@Autowired
 	private ShoppingOrderService shoppingOrderService;
 	private UserService userService;
 	
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
-	public @ResponseBody List<ShoppingOrder> getAllShoppingOrders() {
+	public 	@ResponseBody List<ShoppingOrder> getAllShoppingOrdersByTime(@RequestParam(value = "starting_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date startDate, 
+																		@RequestParam(value = "ending_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date endDate) {
 		int userId = getUserId();
-		List<ShoppingOrder> orders = shoppingOrderService.getAllShoppingOrders(userId);
+		List<ShoppingOrder> orders = new ArrayList<>();
+		if (startDate != null && endDate != null) {
+			orders = shoppingOrderService.getAllShoppingOrdersByTime(new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()), userId);
+		} else {
+			orders = shoppingOrderService.getAllShoppingOrders(userId);
+		}
 		return orders;
 	}
-	
 	
 	@RequestMapping(value = "/getShoppingOrderById/{orderId}", method = RequestMethod.GET)
 	public @ResponseBody ShoppingOrder getShoppingOrderById(@PathVariable(value = "orderId") int orderId) {
@@ -63,13 +69,6 @@ public class ShoppingOrderController {
 		return orders;
 	}
 	
-	private int getUserId() {
-		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetail = (UserDetails) loggedInUser.getPrincipal();
-		User user = userService.getUserByUserEmail(userDetail.getUsername());
-		return user.getUserId();
-	}
-	
 	@RequestMapping(value = "/addShoppingOrder", method = RequestMethod.POST)
 	public String addShoppingOrder(@RequestParam(value = "shoppingUrl", required = true) String url) throws IOException {
 		ShoppingOrder order = parseURL(url);
@@ -77,11 +76,17 @@ public class ShoppingOrderController {
 		return "redirect:/getAllShoppingOrders";
 	}
 	
+	private int getUserId() {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetail = (UserDetails) loggedInUser.getPrincipal();
+		User user = userService.getUserByUserEmail(userDetail.getUsername());
+		return user.getUserId();
+	}
+	
 	private ShoppingOrder parseURL(String url) throws IOException {
-		ShoppingOrder order = new ShoppingOrder();
 		
-		order.setuserId(getUserId());
-		
+		ShoppingOrder shoppingOrder = new ShoppingOrder();
+		shoppingOrder.setOrderId(getUserId());
 		String shoppingURL = getShoppingURL(url);
 		
 		StringBuilder responseBody = new StringBuilder();
@@ -101,19 +106,20 @@ public class ShoppingOrderController {
 			JSONObject firstInfo = (JSONObject)trackingInfo.get(0);
 			status = (String)firstInfo.get("status");
 			System.out.println("status: " + status);
-			order.setStatus(status);
+			shoppingOrder.setStatus(status);
 			String merchant = (String)firstInfo.get("retailer_moniker");
 			System.out.println("merchant: " + merchant);
-			order.setMerchant(merchant);
+			shoppingOrder.setMerchant(merchant);
 		}
 		
 		if (!obj.isNull("order_info")) {
 			JSONObject orderInfo = obj.getJSONObject("order_info");
 			String orderNumber = (String)orderInfo.get("order_number");
 			System.out.println("order number: " + orderNumber);
-			order.setOrderNumber(orderNumber);
+			shoppingOrder.setOrderNumber(orderNumber);
 			String orderDate = (String)orderInfo.get("order_date");
 			System.out.println("order date: " + orderDate);
+			shoppingOrder.setDate(Date.valueOf(orderDate.substring(0, 10)));
 			JSONArray orderItems = orderInfo.getJSONArray("order_items");
 			List<Item> items = new ArrayList<>();
 			for (int i = 0; i < orderItems.length(); i++) {
@@ -125,15 +131,15 @@ public class ShoppingOrderController {
 				int quantity = itemInfo.getInt("quantity");
 				System.out.println("quantity:" + quantity);
 				item.setQuantity(quantity);
-				item.setOrder(order);
+				item.setOrder(shoppingOrder);
 				item.setStatus(status);
 				items.add(item);
 			}
-			order.setItems(items);
+			shoppingOrder.setItems(items);
 		}
-		
-		return order;
+		return shoppingOrder;
 	}
+	
 	private String getShoppingURL(String url) throws IOException {
 		URL shoppingUrl = new URL(url);
 		StringBuilder res = new StringBuilder();
@@ -170,11 +176,9 @@ public class ShoppingOrderController {
 				res.append("%26");
 			} else {
 				res.append(c);
-			}
-			
+			}	
 		}
 		res.append("%20Request%20Method:%20GET");
 		return res.toString();
 	}
 }
-
