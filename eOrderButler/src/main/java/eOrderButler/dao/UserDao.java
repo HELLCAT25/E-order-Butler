@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import eOrderButler.model.Authorities;
 import eOrderButler.model.User;
 
 @Repository
@@ -18,10 +19,12 @@ public class UserDao {
 	private SessionFactory sessionFactory;
 	
 	public void addUser(User user) {
+		user.setEnabled(true);
 		
-		/*
-		 * need to add authentication in the future
-		 * */
+		Authorities authorities = new Authorities();
+		authorities.setAuthorities("ROLE_USER");
+		authorities.setEmailId(user.getEmail());
+		
 		Session session = null;
 		try {
 			session = sessionFactory.openSession();
@@ -46,7 +49,7 @@ public class UserDao {
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
 			Root<User> root = criteriaQuery.from(User.class);
-			criteriaQuery.select(root).where(builder.equal(root.get("userEmail"), userEmail));
+			criteriaQuery.select(root).where(builder.equal(root.get("email"), userEmail));
 			user = session.createQuery(criteriaQuery).getSingleResult();
 			
 			session.getTransaction().commit();

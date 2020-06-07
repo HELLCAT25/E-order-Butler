@@ -1,5 +1,6 @@
 package eOrderButler.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,22 @@ public class ShoppingOrderDao {
 			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
 			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
 			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("user"), userId));
+			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shoppingOrders;
+	}
+	
+	public List<ShoppingOrder> getAllShoppingOrdersByTime(Date startDate, Date endDate) {
+		List<ShoppingOrder> shoppingOrders = new ArrayList<>();
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
+			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
+			criteriaQuery.select(root).where(criteriaBuilder.between(root.get("date"), startDate, endDate));
 			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
 			session.getTransaction().commit();
 		} catch (Exception e) {
