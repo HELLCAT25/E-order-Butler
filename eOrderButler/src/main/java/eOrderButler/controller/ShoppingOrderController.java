@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class ShoppingOrderController {
 	
 	@Autowired
 	private ShoppingOrderService shoppingOrderService;
+	@Autowired
 	private UserService userService;
 	
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
@@ -51,16 +52,16 @@ public class ShoppingOrderController {
 		return orders;
 	}
 	
-	@RequestMapping(value = "/getShoppingOrderById/{orderId}", method = RequestMethod.GET)
-	public @ResponseBody ShoppingOrder getShoppingOrderById(@PathVariable(value = "orderId") int orderId) {
-		ShoppingOrder order = shoppingOrderService.getShoppingOrderById(orderId);
-		return order;
-	}
-	
-	@RequestMapping(value = "/deleteShoppingOrder/{orderId}", method = RequestMethod.GET)
-	public void deleteShoppingOrder(@PathVariable(value = "orderId") int orderId) {
-		shoppingOrderService.removeShoppingOrder(orderId);
-	}
+//	@RequestMapping(value = "/getShoppingOrderById/{orderId}", method = RequestMethod.GET)
+//	public @ResponseBody ShoppingOrder getShoppingOrderById(@PathVariable(value = "orderId") int orderId) {
+//		ShoppingOrder order = shoppingOrderService.getShoppingOrderById(orderId);
+//		return order;
+//	}
+//	
+//	@RequestMapping(value = "/deleteShoppingOrder/{orderId}", method = RequestMethod.GET)
+//	public void deleteShoppingOrder(@PathVariable(value = "orderId") int orderId) {
+//		shoppingOrderService.removeShoppingOrder(orderId);
+//	}
 	
 	@RequestMapping(value = "/search/{itemName}", method = RequestMethod.GET) 
 	public @ResponseBody List<ShoppingOrder> searchByItem(@PathVariable(value = "itemName") String itemName) {
@@ -79,7 +80,8 @@ public class ShoppingOrderController {
 	private int getUserId() {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetail = (UserDetails) loggedInUser.getPrincipal();
-		User user = userService.getUserByUserEmail(userDetail.getUsername());
+		String email = userDetail.getUsername();
+		User user = userService.getUserByUserEmail(email);
 		return user.getUserId();
 	}
 	
@@ -119,7 +121,7 @@ public class ShoppingOrderController {
 			shoppingOrder.setOrderNumber(orderNumber);
 			String orderDate = (String)orderInfo.get("order_date");
 			System.out.println("order date: " + orderDate);
-			shoppingOrder.setDate(Date.valueOf(orderDate.substring(0, 10)));
+			shoppingOrder.setDate(java.sql.Date.valueOf(orderDate.substring(0, 10)));
 			JSONArray orderItems = orderInfo.getJSONArray("order_items");
 			List<Item> items = new ArrayList<>();
 			for (int i = 0; i < orderItems.length(); i++) {

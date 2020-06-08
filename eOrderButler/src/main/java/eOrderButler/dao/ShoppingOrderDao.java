@@ -127,7 +127,7 @@ public class ShoppingOrderDao {
 			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
 			
 			Predicate[] predicates = new Predicate[2];
-			predicates[0] = criteriaBuilder.equal(root.get("userId"), userId);
+			predicates[0] = criteriaBuilder.equal(root.get("user"), userId);
 			predicates[1] = criteriaBuilder.between(root.get("date"), startDate, endDate);
 	
 			criteriaQuery.select(root).where(predicates);
@@ -148,7 +148,7 @@ public class ShoppingOrderDao {
 			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
 			
 			Predicate[] predicates = new Predicate[2];
-			predicates[0] = criteriaBuilder.equal(root.get("userId"), userId);
+			predicates[0] = criteriaBuilder.equal(root.get("user"), userId);
 			predicates[1] = criteriaBuilder.like(root.get("itemName"), String.format("%s%", itemName));
 			
 			criteriaQuery.select(root).where(predicates);
