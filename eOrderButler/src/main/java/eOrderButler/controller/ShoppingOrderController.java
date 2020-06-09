@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import eOrderButler.model.ShoppingOrder;
 import eOrderButler.service.ShoppingOrderService;
@@ -26,6 +27,7 @@ public class ShoppingOrderController {
 	}
 	
 	
+	@CrossOrigin(origins="http://localhost:3001")
 	@RequestMapping(value = "/getShoppingOrderById/{orderId}", method = RequestMethod.GET)
 	public @ResponseBody ShoppingOrder getShoppingOrderById(@PathVariable(value = "orderId") int orderId) {
 		ShoppingOrder order = shoppingOrderService.getShoppingOrderById(orderId);

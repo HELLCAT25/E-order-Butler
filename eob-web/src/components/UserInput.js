@@ -20,10 +20,10 @@ class UserInput extends React.Component {
     render () {
         return (
             <div className="input-group mb-3">
-                <input type="text" className="form-control" placeholder="Add Order Number"
+                <input type="text" className="form-control" placeholder="Add Order URL"
                        aria-label="Recipient's username" aria-describedby="basic-addon2"/>
                     <div className="input-group-append">
-                        <button className="btn btn-outline-secondary add-button" type="button">Button</button>
+                        <button className="btn btn-outline-secondary add-button" type="button">Add</button>
                     </div>
             </div>
         );

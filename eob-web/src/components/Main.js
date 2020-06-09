@@ -65,11 +65,12 @@ class Main extends React.Component {
         // let myRequest = new Request(url, myInit);
         //
         // await fetch(myRequest)
-        //     .then(response => response)
-        //      //.then(response => response.json())
-        //      //.then(data => this.setState({PostData: data}))
-        //     .then(data => {console.log(data);}).
-        //     catch(err => {alert("Error Reading data " + err);
+        //      .then(response => response)//.json())
+        //     .then(data => {console.log(data)})
+        //     //.then(data => {console.log(typeof data)})
+        //      //.then(data => this.setState({PostData:data}))
+        //     //.then(data => {this.setState({ PostData: data })})
+        //     .catch(err => {alert("Error Reading data " + err);
         // });
 
         console.log(this.state)
@@ -82,7 +83,7 @@ class Main extends React.Component {
         return (
             <div className ="main" >
                 <SearchBar />
-                <div className ="dateview" >
+                <div className ="dataview" >
                     <Dataview PostData = { this.state.PostData }/>
                 </div>
                 <div className ="add" >
