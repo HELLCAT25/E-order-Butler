@@ -7,7 +7,9 @@ import aaa from "../assets/json_file/userOrder.json"
 
 // profile and data view's parent
 
-const url = "http://localhost:8085/eOrderButler/getShoppingOrderById/1";
+const url = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
+const url2 = "http://localhost:8085/eOrderButler/getShoppingOrderById/1";
+
 const localDir = "../assets/json_file/userOrder.json";
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -52,25 +54,26 @@ class Main extends React.Component {
 
         await this.setState({PostData: aaa});
 
-        // var myInit = {method: 'GET',
-        //                 headers : {
-        //                     'Content-Type': 'application/json',
-        //                     'Accept': 'application/json',
-        //                     'Origin':'http://localhost:3001'
-        //                 },
-        //                 mode: 'cors',
-        //                 cache: 'default'
-        // };
-        //
-        // let myRequest = new Request(url, myInit);
-        //
-        // await fetch(myRequest)
-        //     .then(response => response)
-        //      //.then(response => response.json())
-        //      //.then(data => this.setState({PostData: data}))
-        //     .then(data => {console.log(data);}).
-        //     catch(err => {alert("Error Reading data " + err);
-        // });
+        var myInit = {method: 'GET',
+                        headers : {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Origin':'http://localhost:3001'
+                        },
+                        mode: 'cors',
+                        cache: 'default'
+        };
+
+        let myRequest = new Request(url, myInit);
+
+        await fetch(myRequest)
+             .then(response => response)
+            .then(data => {console.log(data)})
+            //.then(data => {console.log(typeof data)})
+             //.then(data => this.setState({PostData:data}))
+            //.then(data => {this.setState({ PostData: data })})
+            .catch(err => {console.log("Error Reading data " + err);
+        });
 
         console.log(this.state)
         //debugger
@@ -82,7 +85,7 @@ class Main extends React.Component {
         return (
             <div className ="main" >
                 <SearchBar />
-                <div className ="dateview" >
+                <div className ="dataview" >
                     <Dataview PostData = { this.state.PostData }/>
                 </div>
                 <div className ="add" >
