@@ -40,6 +40,7 @@ public class ShoppingOrderController {
 	@Autowired
 	private UserService userService;
 	
+	@CrossOrigin(origins="http://localhost:3001")
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
 	public 	@ResponseBody List<ShoppingOrder> getAllShoppingOrdersByTime(@RequestParam(value = "starting_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date startDate, 
 																		@RequestParam(value = "ending_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date endDate) {
