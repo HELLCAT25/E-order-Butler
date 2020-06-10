@@ -15,12 +15,12 @@
        
     <context:component-scan base-package="eOrderButler"></context:component-scan>
     
-    <bean id="viewResolver"
+   <!--  <bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/pages/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
     
-<!-- 	<mvc:resources mapping="/resource/**" location="/WEB-INF/resource/" /> -->
-	<mvc:resources mapping="/pages/**" location="/WEB-INF/pages/" />
+	<mvc:resources mapping="/resource/**" location="/WEB-INF/resource/" />
+	<mvc:resources mapping="/pages/**" location="/WEB-INF/pages/" /> -->
 </beans>

@@ -3,6 +3,7 @@ package eOrderButler.jwt;
 import java.util.Date;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import eOrderButler.service.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+@Component
 public class JwtUtils {
 
 	private static final long jwtExpirationMs = 86400000;
