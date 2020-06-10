@@ -30,7 +30,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		try {
 			String jwt = parseJwt(request);
-			
+			System.out.println("Im here at filter");
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String userName = jwtUtils.getUserNameFromJwtToken(jwt);
 				
@@ -42,7 +42,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		filterChain.doFilter(request, response);
 	}
 
 	private String parseJwt(HttpServletRequest request) {

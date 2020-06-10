@@ -35,7 +35,6 @@ public class HomeController {
 	@RequestMapping(value = "/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 		
-		System.out.println("Im here");
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);

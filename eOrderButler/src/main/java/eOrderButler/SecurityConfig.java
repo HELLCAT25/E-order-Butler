@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.authorizeRequests()
-		.antMatchers("/**").authenticated()
+		.antMatchers("/login").permitAll()
 		.anyRequest().authenticated();
 		
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -50,9 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.inMemoryAuthentication().withUser("789@789.com").password("789789789").authorities("ROLE_USER");
-		
+//		auth
+//			.inMemoryAuthentication().withUser("789@789.com").password("789789789").authorities("ROLE_USER");
+//		
 //		auth
 //		.jdbcAuthentication()
 //		.dataSource(dataSource)
