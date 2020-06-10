@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import eOrderButler.jwt.JwtUtils;
+import eOrderButler.payload.request.LoginRequest;
+import eOrderButler.payload.response.JwtResponse;
 import eOrderButler.service.CustomUserDetails;
-import payload.request.LoginRequest;
-import payload.response.JwtResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
