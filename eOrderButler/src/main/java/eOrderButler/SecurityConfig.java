@@ -3,38 +3,48 @@ package eOrderButler;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import eOrderButler.jwt.AuthEntryPointJwt;
+import eOrderButler.jwt.AuthTokenFilter;
+import eOrderButler.service.UserService;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
-	private DataSource dataSource;
-
+	private UserService userDetailsService;
+	
+	@Autowired
+	private AuthEntryPointJwt unauthorizedHandler;
+	
+	@Bean
+	public AuthTokenFilter authenticationJwtTokenFilter() {
+		return new AuthTokenFilter();
+	}
+	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		.cors().and()
 		.csrf().disable()
-		.formLogin()
-			.loginPage("/login")
-			.permitAll()
-		.and()
+		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.authorizeRequests()
-		.antMatchers("/getAllShoppingOrders/**").authenticated()
-		.antMatchers("/**").authenticated()
-//		.antMatchers("/orderDetails").authenticated()
+		.anyRequest().authenticated();
 		
-//		.antMatchers("/cart/**").hasAuthority("ROLE_USER")
-//		.antMatchers("/get*/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//		.antMatchers("/admin*/**").hasAuthority("ROLE_ADMIN")
-		.anyRequest().permitAll()
-		.and()
-		.logout()
-			.logoutUrl("/logout");
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -42,11 +52,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth
 			.inMemoryAuthentication().withUser("789@789.com").password("789789789").authorities("ROLE_USER");
 		
+//		auth
+//		.jdbcAuthentication()
+//		.dataSource(dataSource)
+//		.usersByUsernameQuery("SELECT email, password, enabled FROM User WHERE email=?")
+//		.authoritiesByUsernameQuery("SELECT email, authorities FROM Authorities WHERE email=?");
+		
 		auth
-		.jdbcAuthentication()
-		.dataSource(dataSource)
-		.usersByUsernameQuery("SELECT email, password, enabled FROM User WHERE email=?")
-		.authoritiesByUsernameQuery("SELECT email, authorities FROM Authorities WHERE email=?");
+			.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 	
 	@Bean
