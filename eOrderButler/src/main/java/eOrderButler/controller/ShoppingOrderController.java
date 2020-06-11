@@ -17,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +31,7 @@ import eOrderButler.model.User;
 import eOrderButler.service.ShoppingOrderService;
 import eOrderButler.service.UserService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 public class ShoppingOrderController {
 
@@ -42,7 +45,7 @@ public class ShoppingOrderController {
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
 	public 	@ResponseBody List<ShoppingOrder> getAllShoppingOrdersByTime(@RequestParam(value = "starting_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date startDate, 
 																		@RequestParam(value = "ending_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date endDate) {
-		int userId = getUserId();
+		int userId = getUser().getUserId();
 		List<ShoppingOrder> orders = new ArrayList<>();
 		if (startDate != null && endDate != null) {
 			orders = shoppingOrderService.getAllShoppingOrdersByTime(new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()), userId);
@@ -65,35 +68,39 @@ public class ShoppingOrderController {
 	
 	@RequestMapping(value = "/search/{itemName}", method = RequestMethod.GET) 
 	public @ResponseBody List<ShoppingOrder> searchByItem(@PathVariable(value = "itemName") String itemName) {
-		int userId = getUserId();
-		List<ShoppingOrder> orders = shoppingOrderService.getOrdersByItemName(itemName, userId);
+		User user = getUser();
+//		int userId = getUser().getUserId();
+		List<ShoppingOrder> orders = shoppingOrderService.getOrdersByItemName(itemName, user);
 		return orders;
 	}
 	
 	@RequestMapping(value = "/addShoppingOrder", method = RequestMethod.POST)
-	public String addShoppingOrder(@RequestParam(value = "shoppingUrl", required = true) String url) throws IOException {
+	public String addShoppingOrder(@RequestBody String url) throws IOException {
+		System.out.println("i am here at order controller");
 		ShoppingOrder order = parseURL(url);
 		shoppingOrderService.addShoppingOrder(order);
 		return "redirect:/getAllShoppingOrders";
 	}
 	
-	private int getUserId() {
+	private User getUser() {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetail = (UserDetails) loggedInUser.getPrincipal();
 		String email = userDetail.getUsername();
 		User user = userService.getUserByUserEmail(email);
-		return user.getUserId();
+		return user;
 	}
 	
 	private ShoppingOrder parseURL(String url) throws IOException {
 		
 		ShoppingOrder shoppingOrder = new ShoppingOrder();
-		shoppingOrder.setOrderId(getUserId());
+		shoppingOrder.setUser(getUser());
 		String shoppingURL = getShoppingURL(url);
 		
 		StringBuilder responseBody = new StringBuilder();
 		HttpURLConnection connection = (HttpURLConnection)new URL(shoppingURL).openConnection();
 		connection.setRequestMethod("GET");
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String line = "";
 		while ((line = reader.readLine()) != null) {
@@ -181,6 +188,7 @@ public class ShoppingOrderController {
 			}	
 		}
 		res.append("%20Request%20Method:%20GET");
+		System.out.println(res.toString());
 		return res.toString();
 	}
 }

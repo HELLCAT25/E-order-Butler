@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import eOrderButler.dao.ShoppingOrderDao;
 import eOrderButler.model.ShoppingOrder;
+import eOrderButler.model.User;
 
 @Service
 public class ShoppingOrderService {
@@ -43,7 +44,7 @@ public class ShoppingOrderService {
 		return shoppingOrderDao.getAllShoppingOrdersByTime(startDate, endDate, userId);
 	}
 	
-	public List<ShoppingOrder> getOrdersByItemName(String itemName, int userId) {
-		return shoppingOrderDao.getOrdersByItemName(itemName, userId);
+	public List<ShoppingOrder> getOrdersByItemName(String itemName, User user) {
+		return shoppingOrderDao.getOrdersByItemName(itemName, user);
 	}
 }
