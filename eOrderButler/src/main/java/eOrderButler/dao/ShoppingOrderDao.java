@@ -14,7 +14,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import eOrderButler.model.Item;
 import eOrderButler.model.ShoppingOrder;
+import eOrderButler.model.User;
 
 @Repository
 public class ShoppingOrderDao {
@@ -139,20 +141,26 @@ public class ShoppingOrderDao {
 		return shoppingOrders;
 	}
 	
-	public List<ShoppingOrder> getOrdersByItemName(String itemName, int userId) {
+	public List<ShoppingOrder> getOrdersByItemName(String itemName, User user) {
 		List<ShoppingOrder> shoppingOrders = new ArrayList<>();
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
-			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
-			
+			CriteriaQuery<ShoppingOrder> criteriaQueryOrder = criteriaBuilder.createQuery(ShoppingOrder.class);
+			Root<ShoppingOrder> order = criteriaQueryOrder.from(ShoppingOrder.class);
+			CriteriaQuery<Item> criteriaQueryItem = criteriaBuilder.createQuery(Item.class);
+			Root<Item> item = criteriaQueryItem.from(Item.class);
+
 			Predicate[] predicates = new Predicate[2];
-			predicates[0] = criteriaBuilder.equal(root.get("user"), userId);
-			predicates[1] = criteriaBuilder.like(root.get("itemName"), String.format("%s%", itemName));
+			predicates[0] = criteriaBuilder.in(item.get("order"))
+					.value(criteriaQueryOrder.select(order.get("orderId")).where(criteriaBuilder.equal(order.get("user"), user)));
+			predicates[1] = criteriaBuilder.like(item.get("itemName"), "%" + itemName + "%");
 			
-			criteriaQuery.select(root).where(predicates);
-			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
+			criteriaQueryItem.select(item).where(predicates[0]);
+			List<Item> items = session.createQuery(criteriaQueryItem).getResultList();
+			criteriaQueryOrder.select(order).where(criteriaBuilder.in(order.get("orderId")).value(criteriaQueryItem.select(item.get("order")).where(predicates)));
+			
+			shoppingOrders = session.createQuery(criteriaQueryOrder).list();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
