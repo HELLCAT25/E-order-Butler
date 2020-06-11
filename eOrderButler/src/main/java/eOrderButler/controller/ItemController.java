@@ -16,7 +16,6 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 	
-	
 	@RequestMapping(value = "/order/getItemById/{itemId}", method = RequestMethod.GET)
 	@ResponseBody
 	public Item getItemById(@PathVariable(value = "itemId") int itemId) {
