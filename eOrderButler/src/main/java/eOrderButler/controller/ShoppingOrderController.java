@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import eOrderButler.model.Item;
 import eOrderButler.model.ShoppingOrder;
@@ -40,7 +39,6 @@ public class ShoppingOrderController {
 	@Autowired
 	private UserService userService;
 	
-	@CrossOrigin(origins="http://localhost:3001")
 	@RequestMapping(value = "/getAllShoppingOrders", method = RequestMethod.GET)
 	public 	@ResponseBody List<ShoppingOrder> getAllShoppingOrdersByTime(@RequestParam(value = "starting_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date startDate, 
 																		@RequestParam(value = "ending_date", required = false) @DateTimeFormat(pattern = DATE_PATTERN) Date endDate) {
@@ -87,14 +85,6 @@ public class ShoppingOrderController {
 		return user.getUserId();
 	}
 	
-
-	@CrossOrigin(origins="http://localhost:3001")
-	@RequestMapping(value = "/getShoppingOrderById/{orderId}", method = RequestMethod.GET)
-	public @ResponseBody ShoppingOrder getShoppingOrderById(@PathVariable(value = "orderId") int orderId) {
-		ShoppingOrder order = shoppingOrderService.getShoppingOrderById(orderId);
-		return order;
-	}
-
 	private ShoppingOrder parseURL(String url) throws IOException {
 		
 		ShoppingOrder shoppingOrder = new ShoppingOrder();

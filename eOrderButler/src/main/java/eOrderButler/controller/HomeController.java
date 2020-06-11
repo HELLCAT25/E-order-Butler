@@ -1,32 +1,51 @@
 package eOrderButler.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
+import eOrderButler.jwt.JwtUtils;
+import eOrderButler.payload.request.LoginRequest;
+import eOrderButler.payload.response.JwtResponse;
+import eOrderButler.service.CustomUserDetails;
+
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 public class HomeController {
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
+	@Autowired
+	JwtUtils jwtUtils;
 
 	@RequestMapping(value = "/login")
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
+	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 		
-		System.out.println("error: " + error);
-		System.out.println("logout: " + logout);
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		
-		if (error != null) {
-			modelAndView.addObject("error", "Invalid username and Password");
-		} else if (error == null) {
-			System.out.println("error is null");
-		}
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
 		
-		if (logout != null) {
-			modelAndView.addObject("logout", "You have logged out successfully");
-		}
-		return modelAndView;
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
+				
+		return ResponseEntity.ok(new JwtResponse(jwt,
+												userDetails.getId(),
+												userDetails.getUsername(),
+												roles));
 	}
 }
