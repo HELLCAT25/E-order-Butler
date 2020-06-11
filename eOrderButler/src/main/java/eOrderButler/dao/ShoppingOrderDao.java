@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -142,29 +143,31 @@ public class ShoppingOrderDao {
 	}
 	
 	public List<ShoppingOrder> getOrdersByItemName(String itemName, User user) {
-		List<ShoppingOrder> shoppingOrders = new ArrayList<>();
+		List<ShoppingOrder> shoppingOrderResult = new ArrayList<>();
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<ShoppingOrder> criteriaQueryOrder = criteriaBuilder.createQuery(ShoppingOrder.class);
-			Root<ShoppingOrder> order = criteriaQueryOrder.from(ShoppingOrder.class);
-			CriteriaQuery<Item> criteriaQueryItem = criteriaBuilder.createQuery(Item.class);
-			Root<Item> item = criteriaQueryItem.from(Item.class);
-
+			
+			CriteriaQuery<ShoppingOrder> orderQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
+			Root<ShoppingOrder> orderRoot = orderQuery.from(ShoppingOrder.class);
+			
+			Subquery<Item> itemSubQuery = orderQuery.subquery(Item.class);
+			Root<Item> subQueryItemRoot = itemSubQuery.from(Item.class);
+			Subquery<ShoppingOrder> orderSubQuery = itemSubQuery.subquery(ShoppingOrder.class);
+			Root<ShoppingOrder> subQueryOrderRoot = orderSubQuery.from(ShoppingOrder.class);
+			orderSubQuery.select(subQueryOrderRoot.get("orderId")).where(criteriaBuilder.equal(subQueryOrderRoot.get("user"), user.getUserId()));
 			Predicate[] predicates = new Predicate[2];
-			predicates[0] = criteriaBuilder.in(item.get("order"))
-					.value(criteriaQueryOrder.select(order.get("orderId")).where(criteriaBuilder.equal(order.get("user"), user)));
-			predicates[1] = criteriaBuilder.like(item.get("itemName"), "%" + itemName + "%");
+			predicates[0] = criteriaBuilder.in(subQueryItemRoot.get("order")).value(orderSubQuery);
+			predicates[1] = criteriaBuilder.like(subQueryItemRoot.get("itemName"), "%" + itemName + "%");
+			itemSubQuery.select(subQueryItemRoot.get("order")).where(predicates);
 			
-			criteriaQueryItem.select(item).where(predicates[0]);
-			List<Item> items = session.createQuery(criteriaQueryItem).getResultList();
-			criteriaQueryOrder.select(order).where(criteriaBuilder.in(order.get("orderId")).value(criteriaQueryItem.select(item.get("order")).where(predicates)));
+			orderQuery.select(orderRoot).where(criteriaBuilder.in(orderRoot.get("orderId")).value(itemSubQuery));
 			
-			shoppingOrders = session.createQuery(criteriaQueryOrder).list();
+			shoppingOrderResult = session.createQuery(orderQuery).getResultList();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return shoppingOrders;
+		return shoppingOrderResult;
 	}
 }
