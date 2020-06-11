@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,7 +74,7 @@ public class ShoppingOrderController {
 	}
 	
 	@RequestMapping(value = "/addShoppingOrder", method = RequestMethod.POST)
-	public String addShoppingOrder(@RequestParam(value = "shoppingUrl", required = true) String url) throws IOException {
+	public String addShoppingOrder(@RequestBody String url) throws IOException {
 		ShoppingOrder order = parseURL(url);
 		shoppingOrderService.addShoppingOrder(order);
 		return "redirect:/getAllShoppingOrders";
