@@ -1,68 +1,62 @@
-import React from 'react';
+import React, { Component }  from 'react';
 import Dataview from './Dataview';
 import UserInput from './UserInput';
 import SearchBar from './SearchBar' ;
+import UserService from "../services/user.service";
+import ReactTable from 'react-table';
 
-import aaa from "../assets/json_file/userOrder.json"
+import axios, * as others from 'axios';
+import authHeader from '../services/auth-header';
+import { data, columns, subComponent } from './tableSetup';
 
-// profile and data view's parent
+const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
 
-const url = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
-const url2 = "http://localhost:8085/eOrderButler/getShoppingOrderById/1";
-
-const localDir = "../assets/json_file/userOrder.json";
-const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-// var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-//
-// fetch(proxyUrl + API)
-//     .then(blob => blob.json())
-//     .then(data => {
-//         console.table(data);
-//         document.querySelector("pre").innerHTML = JSON.stringify(data, null, 2);
-//         return data;
-//     })
-//     .catch(e => {
-//         console.log(e);
-//         return e;
-//     });
-
-// fetch(API)
-//     .then(response => response.json())
-//     .then((resp) => resp.json())
-//     .then(function(data) {
-//         console.log(data);
-//     }).catch(function(error) {
-//     alert("HTTP-Error");
-// });
 
 class Detail extends React.Component {
     constructor (props) {
         super (props);
         this.state = {
-            PostData: [],
+            data: [],
         };
+
     }
 
 
     async componentDidMount() {
-
-        await this.setState({PostData: aaa});
-        console.log(this.state)
-        //debugger
+        await axios.get(url_getall, { headers: authHeader() })
+            .then((response) => {
+                console.log(response);
+                this.setState({PostData: response.data})
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
     }
 
 
     render () {
         //debugger;
+        // return (
+        //     <div className ="main" >
+        //         <div className ="dataview" >
+        //             <Dataview PostData = { this.state.PostData }/>
+        //         </div>
+        //     </div>
+        // ) ;
+        const defaultExpandedRows = data.map((element, index) => {return {index: true}});
         return (
-            <div className ="detail" >
-                <SearchBar />
-                <div className ="dataview" >
-                    <Dataview PostData = { this.state.PostData }/>
-                </div>
+            <div>
+                <ReactTable
+                    data={data}
+                    // Use it here
+                    defaultExpanded={defaultExpandedRows}
+                    columns={columns}
+                    defaultPageSize={10}
+                    className="-striped -highlight"
+                    SubComponent={subComponent}
+                />
             </div>
-        ) ;
+        );
     }
 }
 
