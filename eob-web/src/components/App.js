@@ -55,7 +55,7 @@ class App extends Component {
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <img src={logo} className="App-logo" alt="logo" />
-                        <Link to={"/"} className="navbar-brand">
+                        <Link to={"/main"} className="navbar-brand">
                             EOrderButler
                         </Link>
 

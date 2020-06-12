@@ -19,6 +19,7 @@ import authHeader from "../services/auth-header";
 
 const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
 
+
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
@@ -26,6 +27,21 @@ const useRowStyles = makeStyles({
         },
     },
 });
+
+function createData(name, calories, fat, carbs, protein, price) {
+    return {
+        name,
+        calories,
+        fat,
+        carbs,
+        protein,
+        price,
+        history: [
+            { date: '2020-01-05', customerId: '11091700', amount: 3 },
+            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+        ],
+    };
+}
 
 function Row(props) {
     const { row } = props;
@@ -40,19 +56,20 @@ function Row(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-
-                <TableCell align="right">{new Date(row.date).toISOString().slice(0,10)}</TableCell>
-                <TableCell align="right">{row.merchant}</TableCell>
-                <TableCell align="right">{row.orderNumber}</TableCell>
-                <TableCell align="right">{row.totalPrice}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
+                <TableCell component="th" scope="row">
+                    {row.name}
+                </TableCell>
+                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">{row.protein}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
-                                Items Details
+                                History
                             </Typography>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
@@ -64,15 +81,15 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.items.map((historyRow) => (
-                                        <TableRow key={historyRow.itemId}>
+                                    {row.history.map((historyRow) => (
+                                        <TableRow key={historyRow.date}>
                                             <TableCell component="th" scope="row">
-                                                {historyRow.itemName}
+                                                {historyRow.date}
                                             </TableCell>
-                                            <TableCell>{historyRow.status}</TableCell>
-                                            <TableCell align="right">{historyRow.quantity}</TableCell>
+                                            <TableCell>{historyRow.customerId}</TableCell>
+                                            <TableCell align="right">{historyRow.amount}</TableCell>
                                             <TableCell align="right">
-                                                {historyRow.price}
+                                                {Math.round(historyRow.amount * row.price * 100) / 100}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -104,21 +121,6 @@ Row.propTypes = {
     }).isRequired,
 };
 
-function createData(name, calories, fat, carbs, protein, price) {
-    return {
-        name,
-        calories,
-        fat,
-        carbs,
-        protein,
-        price,
-        history: [
-            { date: '2020-01-05', customerId: '11091700', amount: 3 },
-            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-        ],
-    };
-}
-
 const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
     createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
@@ -128,52 +130,26 @@ const rows = [
 ];
 
 
-class Demo extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            PostData: [],
-        };
-    }
-
-    async componentDidMount() {
-        await axios.get(url_getall, { headers: authHeader() })
-            .then((response) => {
-                console.log(response);
-                this.setState({PostData: response.data})
-            })
-            .catch((error)=>{
-                console.log(error);
-            });
-    }
-
-
-
-    render() {
-
-        return (
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell />
-                            <TableCell align="right">Date</TableCell>
-                            <TableCell align="right">Merchant</TableCell>
-                            <TableCell align="right">Order Number</TableCell>
-                            <TableCell align="right">Total</TableCell>
-                            <TableCell align="right">Status</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.PostData.map((row) => (
-                            <Row key={row.name} row={row} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
-    }
+export default function CollapsibleTable() {
+    return (
+        <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell />
+                        <TableCell>Dessert (100g serving)</TableCell>
+                        <TableCell align="right">Calories</TableCell>
+                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row) => (
+                        <Row key={row.name} row={row} />
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }
-
-export default Demo;
