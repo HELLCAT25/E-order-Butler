@@ -16,6 +16,7 @@ import BoardAdmin from "./board-admin.component";
 import TopNavBar from './TopNavBar';
 import Main from './Main';
 import Detail from './Detail';
+import Demo from './demo';
 import logo from "../assets/images/logo.svg";
 
 class App extends Component {
@@ -54,7 +55,7 @@ class App extends Component {
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <img src={logo} className="App-logo" alt="logo" />
-                        <Link to={"/"} className="navbar-brand">
+                        <Link to={"/main"} className="navbar-brand">
                             EOrderButler
                         </Link>
 
@@ -86,13 +87,7 @@ class App extends Component {
                                 </li>
                             )}
 
-                            {currentUser && (
-                                <li className="nav-item">
-                                    <Link to={"/user"} className="nav-link">
-                                        User
-                                    </Link>
-                                </li>
-                            )}
+
                         </div>
 
                         {currentUser ? (
@@ -131,11 +126,12 @@ class App extends Component {
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/register" component={Register} />
                             <Route exact path="/profile" component={Profile} />
-                            <Route path="/user" component={BoardUser} />
-                            <Route path="/mod" component={BoardModerator} />
-                            <Route path="/admin" component={BoardAdmin} />
+                            {/*<Route path="/user" component={BoardUser} />*/}
+                            {/*<Route path="/mod" component={BoardModerator} />*/}
+                            {/*<Route path="/admin" component={BoardAdmin} />*/}
                             <Route path="/main" component={Main} />
-                            <Route path="/detail" component={Detail} />
+                            <Route path="/detail" component={Demo} />
+
                         </Switch>
                     </div>
                 </div>
