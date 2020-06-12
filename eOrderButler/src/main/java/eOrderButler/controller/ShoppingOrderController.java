@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -75,11 +76,20 @@ public class ShoppingOrderController {
 	}
 	
 	@RequestMapping(value = "/addShoppingOrder", method = RequestMethod.POST)
-	public String addShoppingOrder(@RequestBody String url) throws IOException {
+	public ResponseEntity addShoppingOrder(@RequestBody String url) throws IOException {
 		System.out.println("i am here at order controller");
+		URL shoppingURL = new URL(url);
+		String query = shoppingURL.getQuery();
+		String[] params = query.split("?");
+		for (String param : params) {
+			String[] keyValuePair = param.split("=");
+			if (keyValuePair[0] == "order_number") {
+				
+			}
+		}
 		ShoppingOrder order = parseURL(url);
 		shoppingOrderService.addShoppingOrder(order);
-		return "redirect:/getAllShoppingOrders";
+		return ResponseEntity.ok().build();
 	}
 	
 	private User getUser() {
@@ -108,6 +118,7 @@ public class ShoppingOrderController {
 		}
 		reader.close();
 		
+		System.out.println(responseBody.toString());
 		JSONObject obj = new JSONObject(responseBody.toString());
 		String status = "";
 		if (!obj.isNull("tracking_info")) {
@@ -187,7 +198,7 @@ public class ShoppingOrderController {
 				res.append(c);
 			}	
 		}
-		res.append("%20Request%20Method:%20GET");
+//		res.append("%20Request%20Method:%20GET");
 		System.out.println(res.toString());
 		return res.toString();
 	}
