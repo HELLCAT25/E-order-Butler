@@ -170,4 +170,20 @@ public class ShoppingOrderDao {
 		}
 		return shoppingOrderResult;
 	}
+	
+	public boolean consistOrder(String orderNumber) {
+		List<ShoppingOrder> shoppingOrders = new ArrayList<>();
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ShoppingOrder> criteriaQuery = criteriaBuilder.createQuery(ShoppingOrder.class);
+			Root<ShoppingOrder> root = criteriaQuery.from(ShoppingOrder.class);
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("orderNumber"), orderNumber));
+			shoppingOrders = session.createQuery(criteriaQuery).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shoppingOrders.size() == 1;
+	}
 }

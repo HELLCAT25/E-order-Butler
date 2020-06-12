@@ -47,4 +47,8 @@ public class ShoppingOrderService {
 	public List<ShoppingOrder> getOrdersByItemName(String itemName, User user) {
 		return shoppingOrderDao.getOrdersByItemName(itemName, user);
 	}
+	
+	public boolean consistOrder(String orderNumber) {
+		return shoppingOrderDao.consistOrder(orderNumber);
+	}
 }

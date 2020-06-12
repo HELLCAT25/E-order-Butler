@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -74,10 +75,22 @@ public class ShoppingOrderController {
 	}
 	
 	@RequestMapping(value = "/addShoppingOrder", method = RequestMethod.POST)
-	public String addShoppingOrder(@RequestBody String url) throws IOException {
-		ShoppingOrder order = parseURL(url);
-		shoppingOrderService.addShoppingOrder(order);
-		return "redirect:/getAllShoppingOrders";
+	public ResponseEntity addShoppingOrder(@RequestBody String url) throws IOException {
+		System.out.println("i am here at order controller");
+		URL shoppingURL = new URL(url);
+		String query = shoppingURL.getQuery();
+		String[] params = query.split("&");
+		for (String param : params) {
+			String[] keyValuePair = param.split("=");
+			if (keyValuePair[0] == "order_number") {
+				String value = keyValuePair[1];
+				if (!shoppingOrderService.consistOrder(value)) {
+					ShoppingOrder order = parseURL(url);
+					shoppingOrderService.addShoppingOrder(order);
+				}
+			}
+		}
+		return ResponseEntity.ok().build();
 	}
 	
 	private User getUser() {
@@ -94,17 +107,26 @@ public class ShoppingOrderController {
 		shoppingOrder.setUser(getUser());
 		String shoppingURL = getShoppingURL(url);
 		
+//		String shoppingURL2 = "https://ship.sephora.com/tracking/itemvisibility/v1/sephora/orders/29016464204?dzip=02215-3531&locale=en_US&order_number=29016464204&tracking_numbers=9261290141859509204111&tracking_url=https%3A%2F%2Fship.sephora.com%2Ftracking%2Fsephora%2Fusps%3Fdzip%3D02215-3531%26locale%3Den_US%26order_number%3D29016464204%26tracking_numbers%3D9261290141859509204111";
+//		System.out.println(shoppingURL2);
+		
 		StringBuilder responseBody = new StringBuilder();
 		HttpURLConnection connection = (HttpURLConnection)new URL(shoppingURL).openConnection();
-		connection.setRequestMethod("GET");
-		connection.setDoInput(true);
-		connection.setDoOutput(true);
+		
+		int responseCode = connection.getResponseCode();
+		System.out.println(responseCode);
+		
+//		connection.setRequestMethod("GET");
+//		connection.setDoInput(true);
+//		connection.setDoOutput(true);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String line = "";
 		while ((line = reader.readLine()) != null) {
 			responseBody.append(line);
 		}
 		reader.close();
+		
+		System.out.println(responseBody.toString());
 		
 		JSONObject obj = new JSONObject(responseBody.toString());
 		String status = "";
@@ -150,7 +172,7 @@ public class ShoppingOrderController {
 	private String getShoppingURL(String url) throws IOException {
 		URL shoppingUrl = new URL(url);
 		StringBuilder res = new StringBuilder();
-		res.append("http://");
+		res.append("https://");
 		res.append(shoppingUrl.getHost());
 		res.append("/tracking/itemvisibility/v1/sephora/orders/");
 		String query = shoppingUrl.getQuery();
@@ -185,7 +207,8 @@ public class ShoppingOrderController {
 				res.append(c);
 			}	
 		}
-		res.append("%20Request%20Method:%20GET");
+//		res.append("%20Request%20Method:%20GET");
+		System.out.println(res.toString());
 		return res.toString();
 	}
 }
