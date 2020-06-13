@@ -17,7 +17,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
 import authHeader from "../services/auth-header";
 
-const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
 
 const useRowStyles = makeStyles({
     root: {
@@ -44,7 +43,7 @@ function Row(props) {
                 <TableCell align="right">{new Date(row.date).toISOString().slice(0,10)}</TableCell>
                 <TableCell align="right">{row.merchant}</TableCell>
                 <TableCell align="right">{row.orderNumber}</TableCell>
-                <TableCell align="right">{row.totalPrice}</TableCell>
+                <TableCell align="right">{!row.totalPrice ? "N/A" : row.totalPrice}</TableCell>
                 <TableCell align="right">{row.status}</TableCell>
             </TableRow>
             <TableRow>
@@ -60,7 +59,7 @@ function Row(props) {
                                         <TableCell>Item</TableCell>
                                         <TableCell>Status</TableCell>
                                         <TableCell align="right">Amount</TableCell>
-                                        <TableCell align="right">Total price ($)</TableCell>
+                                        <TableCell align="right">Total Price ($)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -72,7 +71,7 @@ function Row(props) {
                                             <TableCell>{historyRow.status}</TableCell>
                                             <TableCell align="right">{historyRow.quantity}</TableCell>
                                             <TableCell align="right">
-                                                {historyRow.price}
+                                                {!historyRow.totalPrice ? "N/A" : historyRow.totalPrice}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -119,7 +118,7 @@ class Demo extends React.Component {
                             <TableCell align="right">Date</TableCell>
                             <TableCell align="right">Merchant</TableCell>
                             <TableCell align="right">Order Number</TableCell>
-                            <TableCell align="right">Total price ($)</TableCell>
+                            <TableCell align="right">Total Price ($)</TableCell>
                             <TableCell align="right">Status</TableCell>
                         </TableRow>
                     </TableHead>

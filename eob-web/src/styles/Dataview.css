@@ -1,0 +1,55 @@
+.my-custom-scrollbar {
+    position: relative;
+    height: 700px;
+    overflow: auto;
+    width : 1000px ;
+}
+.table-wrapper-scroll-y {
+    display: block;
+    height: 650px;
+    width:1000px;
+}
+
+
+/*.table {*/
+/*    display: block;*/
+/*    height: 600px;*/
+/*    width:700px;*/
+/*}*/
+
+/*.thead {*/
+/*    width: 50%;*/
+/*    margin: auto;*/
+/*}*/
+
+
+
+table.myFormat tr td { font-size: 16px; }
+
+
+table {
+    text-align: left;
+    position: relative;
+    border-collapse: collapse;
+    width: 1000px;
+}
+
+
+
+/*tr {*/
+/*    padding: 10px;*/
+/*}*/
+
+/*tbody {*/
+/*    padding: 50px;*/
+/*    width : 1000px ;*/
+/*}*/
+
+
+th {
+    background: white;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    width : 1000px ;
+}

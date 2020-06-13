@@ -10,8 +10,8 @@ import axios, * as others from 'axios';
 import authHeader from '../services/auth-header';
 import { data, columns, subComponent } from './tableSetup';
 
-const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
-const url_search = "http://localhost:8085/eOrderButler/search/";
+const url_getall = "http://54.84.55.238/eOrderButler/getAllShoppingOrders";
+const url_search = "http://54.84.55.238/eOrderButler/search/";
 
 class Detail extends React.Component {
     constructor (props) {
@@ -27,7 +27,8 @@ class Detail extends React.Component {
         await axios.get(url_getall, { headers: authHeader() })
             .then((response) => {
                 console.log(response);
-                this.setState({PostData: response.data})
+                // this.setState({PostData: response.data})
+                this.setState({PostData: response.data.sort((a, b) => b.date - a.date)})
             })
             .catch((error)=>{
                 console.log(error);
@@ -41,7 +42,8 @@ class Detail extends React.Component {
     loadInfo = (txt) => {
         axios.get(url_search + txt, { headers: authHeader() })
             .then((response) => {
-                this.setState({PostData: response.data})
+                // this.setState({PostData: response.data})
+                this.setState({PostData: response.data.sort((a, b) => b.date - a.date)})
             })
             .catch((error)=>{
                 console.log(error);

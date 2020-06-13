@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
-import { useHistory } from "react-router-dom";
+
 
 import AuthService from "../services/auth.service";
 
@@ -54,7 +54,7 @@ class App extends Component {
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <img src={eob} className="App-logo" alt="logo" />
-                        <Link to={"/main"} className="navbar-brand">
+                        <Link to={"/home"} className="navbar-brand">
                             EOrderButler
                         </Link>
 
