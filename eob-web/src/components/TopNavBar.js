@@ -1,6 +1,6 @@
 import React , {Component} from 'react' ;
 import icon from "../assets/images/logo.svg" ;
-import logo from "../assets/images/logo.svg" ;
+import eob from "../assets/images/EOB.svg" ;
 import ReactModalLogin from "react-modal-login";
 import Modal from "react-responsive-modal";
 import { facebookConfig, googleConfig } from "./social-config";
@@ -46,7 +46,7 @@ class TopNavBar extends React.Component {
         return (
         <div className="container">
             <nav className="selfnav navbar navbar-expand-md bg-light sticky-top">
-                <img src={logo} className="App-logo" alt="logo" />
+                <img src={eob} className="App-logo" alt="logo" />
                 <a className="navbar-brand text-dark" href="#">EOrderButler</a>
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                         data-target="#navb" aria-expanded="true">

@@ -1,0 +1,14 @@
+.eobpngstyle {
+    display : flex;
+}
+
+.welcome {
+    text-align: center;
+    width: 750px;
+    margin-bottom: 30px;
+}
+.jumbotron {
+    height: 35px;
+    float: left;
+    padding-left: 40px;
+}

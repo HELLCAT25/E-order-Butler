@@ -1,16 +1,33 @@
 import React, { Component } from "react";
+import eobpng from "../assets/images/EOB.png"
+
 
 import UserService from "../services/user.service";
 
+
 export default class Home extends Component {
+
 
   render() {
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h1>Hello World</h1>
-        </header>
-      </div>
+        <div>
+
+            <div className = "eobpngstyle">
+                <img src={eobpng} width = "1100" ></img>
+
+                {/*<img src={eobpng} height = "300" align={"center"}></img>*/}
+            </div>
+
+
+
+            <div className="container">
+                <header className="jumbotron">
+                    <h2>Welcome to E-order Butler! </h2>
+                    <h4>A web application that assists shoppers to manage their online orders across websites, platforms and merchants.</h4>
+                </header>
+            </div>
+        </div>
+
     );
   }
 }
