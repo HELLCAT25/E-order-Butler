@@ -41,6 +41,10 @@
     bottom: 0;
     margin: auto;
     background-color: rgba(0,0,0, 0.5);
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+
 }
 .popup_inner {
     position: absolute;
@@ -49,5 +53,19 @@
     top: 25%;
     bottom: 25%;
     margin: auto;
-    background: white;
+    background: lightblue;
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.closeit {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    top: 70%;
+    bottom: 10%;
+    margin: auto;
+    background: skyblue;
+    border-radius: 25px;
+    padding: 20px;
 }
