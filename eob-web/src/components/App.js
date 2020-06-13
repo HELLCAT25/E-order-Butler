@@ -16,7 +16,7 @@ import BoardAdmin from "./board-admin.component";
 
 import Main from './Main';
 import Detail from './Detail';
-import logo from "../assets/images/logo.svg";
+import eob from "../assets/images/EOB.svg";
 
 class App extends Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class App extends Component {
             <Router>
                 <div>
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <img src={logo} className="App-logo" alt="logo" />
+                        <img src={eob} className="App-logo" alt="logo" />
                         <Link to={"/main"} className="navbar-brand">
                             EOrderButler
                         </Link>
