@@ -1,6 +1,6 @@
 /*eslint-env jquery*/
 
-import TodoItem from './TodoItem';
+
 import React, {Component} from 'react';
 //import PostData from "../assets/json_file/userOrder.json"
 

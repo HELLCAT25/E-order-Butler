@@ -16,3 +16,8 @@
     margin : auto ;
     overflow : hidden ;
 }
+
+.main {
+    /*flex box 左右居中排布*/
+    display : table-cell;
+}
