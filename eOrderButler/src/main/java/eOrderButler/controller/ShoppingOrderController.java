@@ -82,7 +82,7 @@ public class ShoppingOrderController {
 		String[] params = query.split("&");
 		for (String param : params) {
 			String[] keyValuePair = param.split("=");
-			if (keyValuePair[0] == "order_number") {
+			if (keyValuePair[0].equals("order_number")) {
 				String value = keyValuePair[1];
 				if (!shoppingOrderService.consistOrder(value)) {
 					ShoppingOrder order = parseURL(url);
