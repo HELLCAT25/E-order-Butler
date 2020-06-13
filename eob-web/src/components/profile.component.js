@@ -7,7 +7,7 @@ export default class Profile extends Component {
     this.state = {
       currentUser: AuthService.getCurrentUser()
     };
-      debugger
+      // debugger
   }
 
   render() {
