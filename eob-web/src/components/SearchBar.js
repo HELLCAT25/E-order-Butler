@@ -1,16 +1,11 @@
 import React , {Component} from 'react' ;
-import { AutoComplete , Input , Icon } from 'antd' ;
+import { AutoComplete , Input , Icon,  } from 'antd' ;
 
 import axios, * as others from 'axios';
 import authHeader from '../services/auth-header';
 
-const Option = AutoComplete. Option ;
 const url_search = "http://localhost:8085/eOrderButler/search/";
 
-// 用ant design的search bar
-// {/*<div className = "search-bar">*/}
-// {/*    <Input placeholder="This is search bar" />*/}
-// {/*</div>*/}
 
 class SearchBar extends Component {
     constructor (props) {
@@ -62,9 +57,11 @@ class SearchBar extends Component {
         // ));
         return (
             <div className = "search-bar">
-                <Input onChange={this.handleInputChange} value={this.state.userInput} onPressEnter={this.handleEnter} type="text"
-                       className="form-control" placeholder="Search Item!"
-                       aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+
+                <Input
+                    onChange={this.handleInputChange} value={this.state.userInput} onPressEnter={this.handleEnter} type="text"
+                       className="form-control" placeholder="Search Item and Press Enter : )"
+                       aria-label="Recipient's username" aria-describedby="basic-addon2" />
                 {/*<Input onPressEnter={this.onPressEnter} placeholder="This is search bar" />*/}
             </div>
 

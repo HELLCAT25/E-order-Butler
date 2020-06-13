@@ -22,8 +22,10 @@
     "react-scripts": "3.4.1",
     "react-social-login": "^3.4.7",
     "react-table": "^7.2.0",
+    "react-timeout": "^1.2.0",
     "react-use-auth": "^0.7.5",
     "react-validation": "^3.0.7",
+    "reactjs-popup": "^1.5.0",
     "validator": "^13.0.0"
   },
   "scripts": {

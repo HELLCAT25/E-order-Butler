@@ -28,7 +28,7 @@ class UserInput extends React.Component {
                 <input onChange={this.handleInputChange} value={this.state.userInput} type="text" className="form-control" placeholder="Add Order URL"
                        aria-label="Recipient's username" aria-describedby="basic-addon2"/>
                     <div className="input-group-append">
-                        <button onClick={this.handleAdd} className="btn btn-outline-secondary add-button" type="button">Add</button>
+                        <button onClick={this.handleAdd} className="btn btn-secondary add-button" type="button">Add</button>
                     </div>
             </div>
         );

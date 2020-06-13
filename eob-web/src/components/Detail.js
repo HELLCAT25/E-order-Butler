@@ -51,7 +51,7 @@ class Detail extends React.Component {
     render () {
 
         return (
-            <div className ="main" >
+            <div className ="main">
                 <SearchBar
                     handlePressEnter = { this.handlePressEnter } />
                 <div >
