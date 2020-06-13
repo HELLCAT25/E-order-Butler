@@ -2,7 +2,7 @@
 import axios, * as others from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8085/eOrderButler/';
+const API_URL = 'http://54.84.55.238/eOrderButler/';
 
 class UserService {
   getPublicContent() {

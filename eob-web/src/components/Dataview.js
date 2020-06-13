@@ -15,8 +15,8 @@ class Dataview extends Component {
         // } = this.props.PostData; // get the only info we need
 
         return(
-
-            <table className="table">
+            <div className="table-wrapper-scroll-y my-custom-scrollbar">
+            <table className="table table-bordered table-striped mb-0">
                 <thead>
                 <tr>
                     <th>Date</th>
@@ -41,7 +41,7 @@ class Dataview extends Component {
                 })}
                 </tbody>
             </table>
-
+            </div>
         )
     }
 }

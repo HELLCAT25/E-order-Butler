@@ -17,7 +17,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
 import authHeader from "../services/auth-header";
 
-const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
 
 const useRowStyles = makeStyles({
     root: {

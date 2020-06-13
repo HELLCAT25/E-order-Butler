@@ -23,7 +23,7 @@ export default class Home extends Component {
             <div className="container">
                 <header className="jumbotron">
                     <h2>Welcome to E-order Butler! </h2>
-                    <h4>A web application that assists shoppers to manage their online orders across websites, platforms and merchants.</h4>
+                    <h4>You can now easily track everything your purchase online!</h4>
                 </header>
             </div>
         </div>

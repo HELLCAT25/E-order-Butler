@@ -9,9 +9,9 @@ import Popup from "reactjs-popup";
 import axios, * as others from 'axios';
 import authHeader from '../services/auth-header';
 
-const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
-const url_add = "http://localhost:8085/eOrderButler/addShoppingOrder";
-const url_search = "http://localhost:8085/eOrderButler/search/";
+const url_getall = "http://54.84.55.238/eOrderButler/getAllShoppingOrders";
+const url_add = "http://54.84.55.238/eOrderButler/addShoppingOrder";
+const url_search = "http://54.84.55.238/eOrderButler/search/";
 
 // const localDir = "../assets/json_file/userOrder.json";
 
@@ -50,7 +50,7 @@ class Main extends React.Component {
         axios.get(url_getall, { headers: authHeader() })
             .then((response) => {
                 console.log(response);
-                this.setState({PostData: response.data})
+                this.setState({PostData: response.data.sort((a, b) => b.date - a.date)})
             })
             .catch((error)=>{
                 console.log(error);
@@ -64,7 +64,8 @@ class Main extends React.Component {
     async componentDidMount() {
         await axios.get(url_getall, { headers: authHeader() })
             .then((response) => {
-                this.setState({PostData: response.data})
+                // this.setState({PostData: response.data})
+                this.setState({PostData: response.data.sort((a, b) => b.date - a.date)})
             })
             .catch((error)=>{
                 console.log(error);
@@ -93,7 +94,7 @@ class Main extends React.Component {
         axios.get(url_search + txt, { headers: authHeader() })
             .then((response) => {
                 console.log(response);
-                this.setState({PostData: response.data})
+                this.setState({PostData: response.data.sort((a, b) => b.date - a.date)})
             })
             .catch((error)=>{
                 console.log(error);
@@ -124,8 +125,10 @@ class Main extends React.Component {
                     }
                 </div>
 
+
                 <SearchBar className ="search"
                     handlePressEnter = { this.handlePressEnter } />
+
 
                 <div className ="dataview" >
                     <Dataview PostData = { this.state.PostData }/>

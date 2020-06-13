@@ -1,6 +1,10 @@
 .main {
     /*flex box 左右居中排布*/
-    display : table-cell;
+    /*display : table-cell;*/
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+
 }
 
 .dataview {
@@ -15,9 +19,16 @@
     overflow : hidden ;
 }
 
-.search {
+.search-bar {
     display : flex ;
-    width : 100px ;
+    /*width : 1000px ;*/
+    margin : auto ;
+    /*overflow : hidden ;*/
+}
+
+.searchWrapper {
+    display : flex ;
+    width : 1000px ;
     margin : auto ;
     overflow : hidden ;
 }

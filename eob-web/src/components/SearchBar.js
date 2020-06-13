@@ -4,7 +4,7 @@ import { AutoComplete , Input , Icon,  } from 'antd' ;
 import axios, * as others from 'axios';
 import authHeader from '../services/auth-header';
 
-const url_search = "http://localhost:8085/eOrderButler/search/";
+const url_search = "http://54.84.55.238/eOrderButler/search/";
 
 
 class SearchBar extends Component {
@@ -56,11 +56,11 @@ class SearchBar extends Component {
         //     </Option>
         // ));
         return (
-            <div className = "search-bar">
+            <div className = "search-bar" >
 
                 <Input
                     onChange={this.handleInputChange} value={this.state.userInput} onPressEnter={this.handleEnter} type="text"
-                       className="form-control" placeholder="Search Item and Press Enter : )"
+                       className="form-control" placeholder="Search Item Here"
                        aria-label="Recipient's username" aria-describedby="basic-addon2" />
                 {/*<Input onPressEnter={this.onPressEnter} placeholder="This is search bar" />*/}
             </div>
