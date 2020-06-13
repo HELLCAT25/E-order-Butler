@@ -113,7 +113,7 @@ class Main extends React.Component {
         //debugger;
         return (
             <div className ="main" >
-                <button onClick={this.togglePopup.bind(this)}>show popup</button>
+                {/*<button onClick={this.togglePopup.bind(this)}>show popup</button>*/}
                 <div className='app'>
                     {this.state.showPopup ?
                         <Popup_m
