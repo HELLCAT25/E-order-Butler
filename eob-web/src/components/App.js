@@ -13,10 +13,8 @@ import BoardUser from "./board-user.component";
 import BoardModerator from "./board-moderator.component";
 import BoardAdmin from "./board-admin.component";
 
-import TopNavBar from './TopNavBar';
 import Main from './Main';
 import Detail from './Detail';
-import Demo from './demo';
 import logo from "../assets/images/logo.svg";
 
 class App extends Component {
@@ -130,7 +128,7 @@ class App extends Component {
                             {/*<Route path="/mod" component={BoardModerator} />*/}
                             {/*<Route path="/admin" component={BoardAdmin} />*/}
                             <Route path="/main" component={Main} />
-                            <Route path="/detail" component={Demo} />
+                            <Route path="/detail" component={Detail} />
 
                         </Switch>
                     </div>

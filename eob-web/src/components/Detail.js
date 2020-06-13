@@ -4,19 +4,20 @@ import UserInput from './UserInput';
 import SearchBar from './SearchBar' ;
 import UserService from "../services/user.service";
 import ReactTable from 'react-table';
+import Demo from './demo';
 
 import axios, * as others from 'axios';
 import authHeader from '../services/auth-header';
 import { data, columns, subComponent } from './tableSetup';
 
 const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
-
+const url_search = "http://localhost:8085/eOrderButler/search/";
 
 class Detail extends React.Component {
     constructor (props) {
         super (props);
         this.state = {
-            data: [],
+            PostData: [],
         };
 
     }
@@ -33,28 +34,29 @@ class Detail extends React.Component {
             });
     }
 
+    handlePressEnter = (name) => {
+        this.loadInfo(name);
+    }
+
+    loadInfo = (txt) => {
+        axios.get(url_search + txt, { headers: authHeader() })
+            .then((response) => {
+                this.setState({PostData: response.data})
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
+    }
 
     render () {
-        //debugger;
-        // return (
-        //     <div className ="main" >
-        //         <div className ="dataview" >
-        //             <Dataview PostData = { this.state.PostData }/>
-        //         </div>
-        //     </div>
-        // ) ;
-        const defaultExpandedRows = data.map((element, index) => {return {index: true}});
+
         return (
-            <div>
-                <ReactTable
-                    data={data}
-                    // Use it here
-                    defaultExpanded={defaultExpandedRows}
-                    columns={columns}
-                    defaultPageSize={10}
-                    className="-striped -highlight"
-                    SubComponent={subComponent}
-                />
+            <div className ="main" >
+                <SearchBar
+                    handlePressEnter = { this.handlePressEnter } />
+                <div >
+                    <Demo PostData = { this.state.PostData }/>
+                </div>
             </div>
         );
     }

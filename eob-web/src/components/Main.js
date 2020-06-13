@@ -10,6 +10,7 @@ import authHeader from '../services/auth-header';
 
 const url_getall = "http://localhost:8085/eOrderButler/getAllShoppingOrders";
 const url_add = "http://localhost:8085/eOrderButler/addShoppingOrder";
+const url_search = "http://localhost:8085/eOrderButler/search/";
 
 // const localDir = "../assets/json_file/userOrder.json";
 
@@ -27,19 +28,35 @@ class Main extends React.Component {
 
     handleAddTodo (text) {
         console.log(text);
-        const text1 = "http://ship.sephora.com/tracking/itemvisibility/v1/sephora/orders/25273302644?dzip=63112-1114&locale=en_US&order_number=25273302644&tracking_numbers=1Z5R68990310574080&tracking_url=http%3A%2F%2Fship.sephora.com%2Ftracking%2Fsephora%2Fups%3Fdzip%3D63112-1114%26locale%3Den_US%26order_number%3D25273302644%26tracking_numbers%3D1Z5R68990310574080%20Request%20Method:%20GET"
-        axios.post(url_add, text1, { headers: authHeader() })
+        const text1 = "https://ship.sephora.com/tracking/sephora/ups?dzip=63112-1114&locale=en_US&order_number=25273301435&tracking_numbers=1Z5R68990310574080"
+        axios({
+            method: 'post',
+            url: url_add,
+            headers: authHeader(),
+            data: text1, // This is the body part
+        })
+        //axios.post(url_add ,text1,  { headers: authHeader() })
             .then((response) => {
                 console.log(response);
             })
             .catch((error)=>{
                 console.log(error);
             });
-        // redirect
+        //window.location.reload();
     }
 
     async componentDidMount() {
         await axios.get(url_getall, { headers: authHeader() })
+            .then((response) => {
+                this.setState({PostData: response.data})
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
+    }
+
+    loadInfo = (txt) => {
+        axios.get(url_search + txt, { headers: authHeader() })
             .then((response) => {
                 console.log(response);
                 this.setState({PostData: response.data})
@@ -49,15 +66,23 @@ class Main extends React.Component {
             });
     }
 
+    handlePressEnter = (name) => {
+        this.loadInfo(name);
+    }
 
     render () {
         //debugger;
         return (
             <div className ="main" >
-                <SearchBar />
+
+                <SearchBar
+                    handlePressEnter = { this.handlePressEnter } />
+
                 <div className ="dataview" >
                     <Dataview PostData = { this.state.PostData }/>
                 </div>
+                <br/>
+                <br/>
                 <div className ="add" >
                     <UserInput handleAddTodo= { this.handleAddTodo } />
                 </div>
